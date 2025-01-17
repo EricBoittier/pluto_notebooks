@@ -76,7 +76,7 @@ end
 mutable struct Game
     generator::MersenneTwister
     players::Vector{Player}
-    cards::Vector{Card]
+    cards::Vector{Card}
     currentPlayer::Union{Nothing, Player}
     currentPhase::Symbol
     abilities::Dict{String, Function}
