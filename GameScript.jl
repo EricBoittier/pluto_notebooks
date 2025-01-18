@@ -23,13 +23,13 @@ function create_game_from_cards(players_card_dicts::Vector{Vector{Dict}}, player
             card = Card(
                 card_dict
             )
-            card.lore = get(card_dict, "lore", 0)
-            card.strength = get(card_dict, "strength", 0)
-            card.willpower = get(card_dict, "willpower", 0)
+            card.lore = get(card_dict, "Cost", 0)
+            card.strength = get(card_dict, "Strength", 0)
+            card.willpower = get(card_dict, "Willpower", 0)
             card.baseName = get(card_dict, "baseName", "")
             card.hasShift = get(card_dict, "hasShift", false)
             card.shiftValue = get(card_dict, "shiftValue", 0)
-            card.inkable = get(card_dict, "inkable", false)
+            card.inkable = get(card_dict, "Inkable", false)
             push!(game.cards, card)
             push!(tmp_deck, card)
         end

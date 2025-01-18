@@ -44,6 +44,7 @@ mutable struct Card
     rarity::Rarity
     color::CardColor
     atLocation::Bool
+    image::String
     hasRush::Bool
     hasEvasive::Bool
     hasWard::Bool
@@ -56,9 +57,9 @@ mutable struct Card
     function Card(cost::Int, fullName::String, baseName::String, version::String, 
                   cardTypes::Vector{CardType}, classifications::Vector{Classification}, 
                   strength::Int, willpower::Int, lore::Int, inkable::Bool, 
-                  abilitiesText::Vector{String}, rarity::Rarity, color::CardColor, atLocation::Bool)
+                  abilitiesText::Vector{String}, rarity::Rarity, color::CardColor, atLocation::Bool, image::String)
         new(cost, fullName, baseName, version, cardTypes, classifications, strength, 
-            willpower, lore, inkable, abilitiesText, rarity, color, atLocation, false, false, 
+            willpower, lore, inkable, abilitiesText, rarity, color, atLocation, image, false, false, 
             false, false, 0, cost, false, 0)
     end
 end
@@ -111,9 +112,6 @@ function ChangeZone(from::Vector{Card}, to::Vector{Card}, card::Card, index::Int
     end
 end
 
-
-
-
 # Enum helper functions
 function getCardType(typeStr::String)::CardType
     # Convert string to enum
@@ -156,12 +154,17 @@ function Card(jsonValue::Dict{String, Any})
     else
         abilitiesText = [""]
     end
+    if "Image" in keys(jsonValue)
+        image = jsonValue["Image"]
+    else
+        image = ""
+    end
     rarity = getRarity(jsonValue["Rarity"])
     color = getColor(jsonValue["Color"])
     atLocation = false
     version = get(jsonValue, "Version", "")
     card = Card(cost, fullName, baseName, version, cardTypes, classifications, strength, 
-                willpower, lore, inkable, abilitiesText, rarity, color, atLocation)
+                willpower, lore, inkable, abilitiesText, rarity, color, atLocation, image)
 
     parseCardText(card)
     return card

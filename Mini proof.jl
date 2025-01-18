@@ -55,6 +55,65 @@ p = game.players[1]
 # ╔═╡ ff48f3f7-ecbe-4c15-b5ba-a8def3cdd238
 shuffle(game.players[1].deck)
 
+# ╔═╡ 60f9838a-9f1c-468d-a183-1e7841066d9a
+deck_dataframe = DataFrame(Tables.dictcolumntable(game.players[1].deck))
+
+# ╔═╡ 15aa8a18-b234-4704-80d4-500399248f07
+begin
+	function LoadImages(df)
+		images = [load(c) for c in df[!,"image"]]
+		return images
+	end
+end
+
+# ╔═╡ d5de7c45-edf2-4611-996d-bcb177df378b
+begin
+	shuffled = deck_dataframe[shuffle(1:nrow(deck_dataframe))[1:7], :]
+	all_images = LoadImages(first(shuffled, 7))
+	mosaicview(all_images, nrow=1, npad=1, rowmajor=true)
+end
+
+# ╔═╡ 34f2c69d-4f67-4b80-bcd9-8d1a6c76b89a
+md"""# Shuffle
+"""
+
+# ╔═╡ 0217a435-58b3-4d73-bb62-fdb4788c267e
+mean(deck_dataframe.inkable) * 7
+
+# ╔═╡ 9671689f-c6ff-4846-a7d9-de20a5fe352a
+begin
+	ink_sum = 0
+	N = 10000
+	for i in range(1, 1, N+1)
+		shuffled_ = deck_dataframe[shuffle(1:nrow(deck_dataframe))[1:7], :]
+		ink_sum += sum(shuffled_.inkable)
+	end
+	ink_sum / N
+end
+
+# ╔═╡ 1f3dd4e7-e357-4a49-aa44-1ae3502dfc63
+md"""# Shuffle + Mulligan
+"""
+
+# ╔═╡ 481f92b2-612e-48ec-a3ce-10f694c02a77
+begin
+	ink_sum_ = 0
+	N_ = 10_000_000
+	for i in range(1, 1, N_+1)
+		shuffled_ = deck_dataframe[shuffle(1:nrow(deck_dataframe))[1:14], :]
+		ink_draw = sum(shuffled_.inkable[1:7])
+		ink_mulligan = 0
+		if ink_draw != 7
+			ink_mulligan = sum(shuffled_.inkable[8:14-ink_draw])
+		end
+		ink_sum_ += ink_draw + ink_mulligan
+	end
+	ink_sum_ / N_
+end
+
+# ╔═╡ 64cdc824-be67-4597-a169-a2aba69128d0
+deck_dataframe[shuffle(1:nrow(deck_dataframe))[1:14], :].inkable[1:7]
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -2358,5 +2417,14 @@ version = "1.4.1+2"
 # ╠═eddeb4ac-f886-4145-bb0c-397407d35dd0
 # ╠═c42afd97-31a7-4218-a759-10f3acffd73f
 # ╠═ff48f3f7-ecbe-4c15-b5ba-a8def3cdd238
+# ╠═60f9838a-9f1c-468d-a183-1e7841066d9a
+# ╠═15aa8a18-b234-4704-80d4-500399248f07
+# ╠═d5de7c45-edf2-4611-996d-bcb177df378b
+# ╠═34f2c69d-4f67-4b80-bcd9-8d1a6c76b89a
+# ╠═0217a435-58b3-4d73-bb62-fdb4788c267e
+# ╠═9671689f-c6ff-4846-a7d9-de20a5fe352a
+# ╠═1f3dd4e7-e357-4a49-aa44-1ae3502dfc63
+# ╠═481f92b2-612e-48ec-a3ce-10f694c02a77
+# ╠═64cdc824-be67-4597-a169-a2aba69128d0
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
