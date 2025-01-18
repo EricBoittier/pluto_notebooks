@@ -25,12 +25,10 @@ begin
 end
 
 # ╔═╡ 282bca20-d4f1-11ef-3aa9-4d513b14fb52
-include("Library.jl") 
-# using .Library
+include("C:\\Users\\Eric\\Documents\\GitHub\\pluto_notebooks\\Library.jl") 
 
 # ╔═╡ 7730ccf8-92dd-436d-a6db-822add3d3fcb
-include("GameScript.jl")
-# using .GameScriptJL
+include("C:\\Users\\Eric\\Documents\\GitHub\\pluto_notebooks\\GameScript.jl")
 
 # ╔═╡ fafa2131-16a1-43f6-980b-422bdc5a780d
 
@@ -47,6 +45,7 @@ begin
     join(map(p -> p.name, game.players), ", "))
     println("Game has ", length(game.cards), " cards in the card pool.")   
     println("Game has ", length(game.players), " players.")
+
 end
 
 
@@ -129,61 +128,6 @@ begin
 	fourteen[findall(x -> chase(x), fourteen[!, :fullName]), :]
 end
 
-# ╔═╡ 3e5c1230-fc86-428f-9576-cc3d613d8dff
-# node_colors
-
-# ╔═╡ 52bedafa-7ae4-41bc-b935-fe14a68d6662
-begin
-	node_colors = [get(cgrad(:thermal), x["cost"]/10) for x in eachrow(deck_dataframe)];
-	print()
-	# length(node_colors)
-	# deck_dataframe[!,"cost"]
-end
-
-# ╔═╡ c10ff768-3a1b-4dfa-b1d4-4937a2975eff
-begin
-	color_dict = Dict(1 => "purple", 3 => "red");
-	ink_colors = [color_dict[Int(x)] for x in deck_dataframe.color];
-end
-
-# ╔═╡ 491f6360-b454-4979-ba82-faec5db7480f
-begin
-	# construct a simple undirected graph
-	g = SimpleGraph(60)
-	inc_x = 1
-	inc_y = 1
-	for x in eachrow(deck_dataframe)
-		println(x)
-		
-		for y in eachrow(deck_dataframe)
-			if (inc_x < inc_y) * (inc_x != inc_y) * (abs(x["cost"] - y["cost"]) < 3)
-				add_edge!(g, inc_x, inc_y)
-			end
-			inc_y += 1
-		end
-		inc_y = 1
-		inc_x += 1
-	end
-	nodelabel = deck_dataframe[!,"cost"] #collect(1:nv(g))
-	
-	gplot(g, nodelabel=nodelabel,
-		nodefillc=ink_colors,
-		plot_size=(14cm,14cm), layout=spring_layout, edgelinewidth=0.01, 
-		nodestrokec = "gold",
-    	nodestrokelw = deck_dataframe[!,"inkable"],
-		edgestrokec="gray", linetype="curve", outangle=π/11)
-	# just plot it
-	# gplot(g) 
-	# If you are in Julia REPL 
-	# instead with `gplothtml(g)` to display result in a temp html file
-end
-
-# ╔═╡ 3c97bc6c-1165-4495-a6bd-4288736c99ce
-# deck_dataframe.color
-
-# ╔═╡ 2ec53c55-d5ed-4d82-9a3a-7f6a3573ba5c
-
-
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -191,8 +135,6 @@ CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
-GraphPlot = "a2cc645c-3eea-5389-862e-a155d0052231"
-Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
 ImageView = "86fae568-95e7-573e-a6b2-d8a6b900c9ef"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
@@ -207,10 +149,8 @@ StatsPlots = "f3b207a7-027a-5e70-b257-86293d7955fd"
 CSV = "~0.10.15"
 Combinatorics = "~1.0.2"
 DataFrames = "~1.7.0"
-Distributions = "~0.25.117"
-GraphPlot = "~0.6.0"
-Graphs = "~1.9.0"
-ImageView = "~0.12.6"
+Distributions = "~0.25.116"
+ImageView = "~0.12.1"
 Images = "~0.26.1"
 JSON = "~0.21.4"
 MosaicViews = "~0.3.4"
@@ -226,7 +166,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.11.2"
 manifest_format = "2.0"
-project_hash = "5beed1f122845c4de0d0097ef254e5c333957b1c"
+project_hash = "db9b91a517a1c48ba2758bfe9498fe0eccf8fcce"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -267,9 +207,9 @@ version = "1.1.2"
 
 [[deps.ArnoldiMethod]]
 deps = ["LinearAlgebra", "Random", "StaticArrays"]
-git-tree-sha1 = "62e51b39331de8911e4a7ff6f5aaf38a5f4cc0ae"
+git-tree-sha1 = "d57bd3762d308bded22c3b82d033bff85f6195c6"
 uuid = "ec485272-7323-5ecc-a04f-4719b315124d"
-version = "0.2.0"
+version = "0.4.0"
 
 [[deps.Arpack]]
 deps = ["Arpack_jll", "Libdl", "LinearAlgebra", "Logging"]
@@ -464,12 +404,6 @@ deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 version = "1.1.1+0"
 
-[[deps.Compose]]
-deps = ["Base64", "Colors", "DataStructures", "Dates", "IterTools", "JSON", "LinearAlgebra", "Measures", "Printf", "Random", "Requires", "Statistics", "UUIDs"]
-git-tree-sha1 = "bf6570a34c850f99407b494757f5d7ad233a7257"
-uuid = "a81c6b42-2e10-5240-aca2-a61377ecd94b"
-version = "0.9.5"
-
 [[deps.ComputationalResources]]
 git-tree-sha1 = "52cb3ec90e8a8bea0e62e275ba577ad0f74821f7"
 uuid = "ed09eef8-17a6-5b46-8889-db040fac31e3"
@@ -576,9 +510,9 @@ version = "1.11.0"
 
 [[deps.Distributions]]
 deps = ["AliasTables", "FillArrays", "LinearAlgebra", "PDMats", "Printf", "QuadGK", "Random", "SpecialFunctions", "Statistics", "StatsAPI", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "03aa5d44647eaec98e1920635cdfed5d5560a8b9"
+git-tree-sha1 = "7901a6117656e29fa2c74a58adb682f380922c47"
 uuid = "31c24e10-a181-5473-b8eb-7969acd0382f"
-version = "0.25.117"
+version = "0.25.116"
 
     [deps.Distributions.extensions]
     DistributionsChainRulesCoreExt = "ChainRulesCore"
@@ -762,12 +696,6 @@ git-tree-sha1 = "b0036b392358c80d2d2124746c2bf3d48d457938"
 uuid = "7746bdde-850d-59dc-9ae8-88ece973131d"
 version = "2.82.4+0"
 
-[[deps.GraphPlot]]
-deps = ["ArnoldiMethod", "Colors", "Compose", "DelimitedFiles", "Graphs", "LinearAlgebra", "Random", "SparseArrays"]
-git-tree-sha1 = "f76a7a0f10af6ce7f227b7a921bfe351f628ed45"
-uuid = "a2cc645c-3eea-5389-862e-a155d0052231"
-version = "0.6.0"
-
 [[deps.Graphene_jll]]
 deps = ["Artifacts", "Glib_jll", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "61850a17f562453e3485a489c9c8cccb3abcab93"
@@ -788,9 +716,9 @@ version = "1.3.14+1"
 
 [[deps.Graphs]]
 deps = ["ArnoldiMethod", "Compat", "DataStructures", "Distributed", "Inflate", "LinearAlgebra", "Random", "SharedArrays", "SimpleTraits", "SparseArrays", "Statistics"]
-git-tree-sha1 = "899050ace26649433ef1af25bc17a815b3db52b7"
+git-tree-sha1 = "1dc470db8b1131cfc7fb4c115de89fe391b9e780"
 uuid = "86223c79-3864-5bf0-83f7-82e725a168b6"
-version = "1.9.0"
+version = "1.12.0"
 
 [[deps.Grisu]]
 git-tree-sha1 = "53bb909d1151e57e2484c3d1b53e19552b887fb2"
@@ -798,10 +726,10 @@ uuid = "42e2da0e-8278-4e71-bc24-59509adca0fe"
 version = "1.0.2"
 
 [[deps.Gtk4]]
-deps = ["BitFlags", "CEnum", "Cairo", "Cairo_jll", "ColorTypes", "FixedPointNumbers", "GTK4_jll", "Glib_jll", "Graphene_jll", "Graphics", "JLLWrappers", "Libdl", "Librsvg_jll", "Pango_jll", "Preferences", "Reexport", "Scratch", "Xorg_xkeyboard_config_jll", "adwaita_icon_theme_jll", "gdk_pixbuf_jll", "hicolor_icon_theme_jll", "libpng_jll"]
-git-tree-sha1 = "64d43c91b4e304604e7f204a96f3efccb8d17076"
+deps = ["BitFlags", "CEnum", "Cairo", "Cairo_jll", "ColorTypes", "GTK4_jll", "Glib_jll", "Graphene_jll", "Graphics", "JLLWrappers", "Libdl", "Librsvg_jll", "Pango_jll", "Preferences", "Reexport", "Scratch", "Xorg_xkeyboard_config_jll", "adwaita_icon_theme_jll", "gdk_pixbuf_jll", "hicolor_icon_theme_jll"]
+git-tree-sha1 = "62dd852143217375e929fb5aec15c2d967fb8eb5"
 uuid = "9db2cae5-386f-4011-9d63-a5602296539b"
-version = "0.7.2"
+version = "0.6.1"
 
 [[deps.GtkObservables]]
 deps = ["Cairo", "Colors", "Dates", "FixedPointNumbers", "Graphics", "Gtk4", "IntervalSets", "LinearAlgebra", "Observables", "PrecompileTools", "Reexport", "RoundingIntegers"]
@@ -966,9 +894,9 @@ version = "0.10.1"
 
 [[deps.ImageView]]
 deps = ["AxisArrays", "Cairo", "Compat", "Graphics", "Gtk4", "GtkObservables", "ImageBase", "ImageCore", "ImageMetadata", "MultiChannelColors", "PrecompileTools", "RoundingIntegers", "StatsBase"]
-git-tree-sha1 = "e535c709a4fb6f0ae65026fa9bfac624abec016f"
+git-tree-sha1 = "3dbbb37376589f41c2373303fa2b6258cbdbfec9"
 uuid = "86fae568-95e7-573e-a6b2-d8a6b900c9ef"
-version = "0.12.6"
+version = "0.12.1"
 
 [[deps.Images]]
 deps = ["Base64", "FileIO", "Graphics", "ImageAxes", "ImageBase", "ImageBinarization", "ImageContrastAdjustment", "ImageCore", "ImageCorners", "ImageDistances", "ImageFiltering", "ImageIO", "ImageMagick", "ImageMetadata", "ImageMorphology", "ImageQualityIndexes", "ImageSegmentation", "ImageShow", "ImageTransformations", "IndirectArrays", "IntegralArrays", "Random", "Reexport", "SparseArrays", "StaticArrays", "Statistics", "StatsBase", "TiledIteration"]
@@ -1498,9 +1426,9 @@ version = "10.42.0+1"
 
 [[deps.PDMats]]
 deps = ["LinearAlgebra", "SparseArrays", "SuiteSparse"]
-git-tree-sha1 = "966b85253e959ea89c53a9abebbf2e964fbf593b"
+git-tree-sha1 = "949347156c25054de2db3b166c52ac4728cbad65"
 uuid = "90014a1f-27ba-587c-ab20-58faa44d9150"
-version = "0.11.32"
+version = "0.11.31"
 
 [[deps.PNGFiles]]
 deps = ["Base64", "CEnum", "ImageCore", "IndirectArrays", "OffsetArrays", "libpng_jll"]
@@ -1656,9 +1584,9 @@ uuid = "92933f4c-e287-5a05-a399-4b506db050ca"
 version = "1.10.2"
 
 [[deps.PtrArrays]]
-git-tree-sha1 = "1d36ef11a9aaf1e8b74dacc6a731dd1de8fd493d"
+git-tree-sha1 = "77a42d78b6a92df47ab37e177b2deac405e1c88f"
 uuid = "43287f4e-b6f4-7ad1-bb20-aadabca52c3d"
-version = "1.3.0"
+version = "1.2.1"
 
 [[deps.QOI]]
 deps = ["ColorTypes", "FileIO", "FixedPointNumbers"]
@@ -2072,9 +2000,9 @@ uuid = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
 version = "0.11.3"
 
 [[deps.Tricks]]
-git-tree-sha1 = "6cae795a5a9313bbb4f60683f7263318fc7d1505"
+git-tree-sha1 = "7822b97e99a1672bfb1b49b668a6d46d58d8cbcb"
 uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
-version = "0.1.10"
+version = "0.1.9"
 
 [[deps.URIs]]
 git-tree-sha1 = "67db6cc7b3821e19ebe75791a9dd19c9b1188f2b"
@@ -2437,9 +2365,9 @@ version = "1.18.0+0"
 
 [[deps.libpng_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Zlib_jll"]
-git-tree-sha1 = "93284c28274d9e75218a416c65ec49d0e0fcdf3d"
+git-tree-sha1 = "d7b5bbf1efbafb5eca466700949625e07533aff2"
 uuid = "b53b4c65-9356-5827-b1ea-8c7a1a84506f"
-version = "1.6.40+0"
+version = "1.6.45+1"
 
 [[deps.libsixel_jll]]
 deps = ["Artifacts", "JLLWrappers", "JpegTurbo_jll", "Libdl", "libpng_jll"]
@@ -2512,11 +2440,5 @@ version = "1.4.1+2"
 # ╠═1f3dd4e7-e357-4a49-aa44-1ae3502dfc63
 # ╠═481f92b2-612e-48ec-a3ce-10f694c02a77
 # ╠═64cdc824-be67-4597-a169-a2aba69128d0
-# ╠═491f6360-b454-4979-ba82-faec5db7480f
-# ╠═3e5c1230-fc86-428f-9576-cc3d613d8dff
-# ╠═52bedafa-7ae4-41bc-b935-fe14a68d6662
-# ╠═c10ff768-3a1b-4dfa-b1d4-4937a2975eff
-# ╠═3c97bc6c-1165-4495-a6bd-4288736c99ce
-# ╠═2ec53c55-d5ed-4d82-9a3a-7f6a3573ba5c
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
