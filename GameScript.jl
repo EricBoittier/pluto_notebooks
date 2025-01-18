@@ -1,55 +1,72 @@
+module GameScriptJL
 using Random
 include("Game.jl")
 include("Player.jl")
-include("Card.jl")
 
 using .Redacted
+import .Redacted.Card as Card
+import .Redacted.Game as Game
+import .Redacted.Player as Player
 
-function create_game_from_cards(card_dicts::Vector{Dict{String, Any}}, player_names::Vector{String})
+function create_game_from_cards(players_card_dicts::Vector{Vector{Dict}}, player_names::Vector{String})
     # Create the game with a random seed
-    seed = RandomDevice()()
+    seed = rand(Int)
+    # rng = MersenneTwister(seed)
     game = Game(seed)
+    Decks = Vector{Vector{Card}}() #(length(players_card_dicts))
+    
 
-    # Parse cards from dictionaries and add to the game's card pool
-    for card_dict in card_dicts
-        card = Card(
-            card_dict["cost"],
-            card_dict["cardType"]
-        )
-        card.lore = get(card_dict, "lore", 0)
-        card.strength = get(card_dict, "strength", 0)
-        card.willpower = get(card_dict, "willpower", 0)
-        card.baseName = get(card_dict, "baseName", "")
-        card.hasShift = get(card_dict, "hasShift", false)
-        card.shiftValue = get(card_dict, "shiftValue", 0)
-        card.inkable = get(card_dict, "inkable", false)
-        push!(game.cards, card)
+    for card_dicts in players_card_dicts
+        tmp_deck = Vector{Card}() #(length(card_dicts))
+        # Parse cards from dictionaries and add to the game's card pool
+        for card_dict in card_dicts
+            card = Card(
+                card_dict
+            )
+            card.lore = get(card_dict, "lore", 0)
+            card.strength = get(card_dict, "strength", 0)
+            card.willpower = get(card_dict, "willpower", 0)
+            card.baseName = get(card_dict, "baseName", "")
+            card.hasShift = get(card_dict, "hasShift", false)
+            card.shiftValue = get(card_dict, "shiftValue", 0)
+            card.inkable = get(card_dict, "inkable", false)
+            push!(game.cards, card)
+            push!(tmp_deck, card)
+        end
+        push!(Decks, tmp_deck)
     end
 
+    println(Decks)
+
     # Add players to the game
-    for name in player_names
-        add_player!(game, name)
+    for (name, deck) in zip(player_names, Decks)
+        println("Adding player ", name)
+        
+        if any(p -> p.name == name, game.players)
+            println("Player name $name already exists.")
+        else
+            println(typeof(deck))
+            println(typeof(deck[1]))
+            
+            push!(game.players, Player(name, convert(Int64,length(game.players) + 1), deck))
+        end
     end
 
     # Start the game
-    if !start_game!(game)
-        error("Failed to start the game. Ensure the setup is correct.")
-    end
+    game->start_game!(game)
 
     return game
 end
 
 # Example Usage
 if abspath(PROGRAM_FILE) == @__FILE__
-    card_dicts = [
-        Dict("cost" => 1, "cardType" => :Location, "lore" => 2),
-        Dict("cost" => 3, "cardType" => :Character, "strength" => 5, "willpower" => 3, "baseName" => "Warrior"),
-        Dict("cost" => 2, "cardType" => :Character, "strength" => 2, "willpower" => 2, "baseName" => "Mage", "inkable" => true)
-    ]
-
     player_names = ["Alice", "Bob"]
-
     game = create_game_from_cards(card_dicts, player_names)
-
     println("Game created successfully with players: ", join(map(p -> p.name, game.players), ", "))
+    println("Game has ", length(game.cards), " cards in the card pool.")   
+    println("Game has ", length(game.players), " players.")
+    println("Game has ", length(game.currentPlayer.hand), " cards in the current player's hand.")
+    println("Game has ", length(game.currentPlayer.deck), " cards in the current player's deck.")
+end
+
 end

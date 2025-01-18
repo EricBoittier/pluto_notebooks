@@ -1,7 +1,10 @@
-module Player
+module PlayerState
 
 include("Card.jl")
-using .Card
+using .CardData
+import .CardData.Card as Card
+
+
 
 mutable struct Player
     id::Int
@@ -13,8 +16,8 @@ mutable struct Player
     loreTotal::Int
     inkedThisTurn::Bool
 
-    function Player(name::String)
-        new(length(Player.all_players) + 1, name, Card[], Card[], Card[], Card[], 0, false)
+    function Player(name::String, id::Int64, deck::Vector{Card})
+        new(id, name, Card[], Card[], deck, Card[], 0, false)
     end
 
     function DoTurnStart!(player::Player, doDraw::Bool=true)

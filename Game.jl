@@ -3,6 +3,15 @@ module Redacted
 using JSON
 using Random
 
+# include("Card.jl")
+# using .CardData
+# import .CardData.Card as Card
+
+include("Player.jl")
+using .PlayerState
+import .PlayerState.Player as Player
+import .PlayerState.Card as Card
+
 # Placeholder types
 abstract type Phase end
 abstract type TurnActionType end
@@ -20,58 +29,32 @@ mutable struct TurnAction
     targetPlayer::Any
 end
 
-mutable struct Card
-    cost::Int
-    owner::Any
-    isReady::Bool
-    isDry::Bool
-    hasRush::Bool
-    hasEvasive::Bool
-    hasWard::Bool
-    hasBodyguard::Bool
-    damageCounters::Int
-    willpower::Int
-    strength::Int
-    cardType::Symbol
-    shiftValue::Int
-    lore::Int
-    moveCost::Int
+# mutable struct Player
+#     name::String
+#     id::Int
+#     deck::Vector{Card}
+#     hand::Vector{Card}
+#     field::Vector{Card}
+#     discard::Vector{Card}
+#     inkwell::Vector{Card}
+#     loreTotal::Int
+#     doneMulligan::Bool
+#     inkedThisTurn::Bool
 
-    function Card(cost::Int, cardType::Symbol)
-        new(cost, nothing, true, true, false, false, false, false, 0, 0, 0, cardType, 0, 0, 0)
-    end
+#     function Player(name::String, id::Int)
+#         new(name, id, Card[], Card[], Card[], Card[], Card[], 0, false, false)
+#     end
 
-    function apply_damage!(card::Card, amount::Int)
-        card.damageCounters += max(0, amount)
-    end
-end
-
-mutable struct Player
-    name::String
-    id::Int
-    deck::Vector{Card}
-    hand::Vector{Card}
-    field::Vector{Card}
-    discard::Vector{Card}
-    inkwell::Vector{Card}
-    loreTotal::Int
-    doneMulligan::Bool
-    inkedThisTurn::Bool
-
-    function Player(name::String, id::Int)
-        new(name, id, Card[], Card[], Card[], Card[], Card[], 0, false, false)
-    end
-
-    function draw_cards!(player::Player, num::Int)
-        for _ in 1:num
-            if isempty(player.deck)
-                println("Deck is empty.")
-                break
-            end
-            push!(player.hand, pop!(player.deck))
-        end
-    end
-end
+#     function draw_cards!(player::Player, num::Int)
+#         for _ in 1:num
+#             if isempty(player.deck)
+#                 println("Deck is empty.")
+#                 break
+#             end
+#             push!(player.hand, pop!(player.deck))
+#         end
+#     end
+# end
 
 mutable struct Game
     generator::MersenneTwister
@@ -85,14 +68,14 @@ mutable struct Game
         new(MersenneTwister(seed), Player[], Card[], nothing, PHASE_UNSTARTED, Dict{String, Function}())
     end
 
-    function add_player!(game::Game, playerName::String)
-        if any(p -> p.name == playerName, game.players)
-            println("Player name $playerName already exists.")
-            return nothing
-        end
+    # function add_player!(game::Game, playerName::String)
+    #     if any(p -> p.name == playerName, game.players)
+    #         println("Player name $playerName already exists.")
+    #         return nothing
+    #     end
 
-        push!(game.players, Player(playerName, length(game.players) + 1))
-    end
+    #     push!(game.players, Player(playerName, length(game.players) + 1))
+    # end
 
     function start_game!(game::Game)
         if game.currentPhase != PHASE_UNSTARTED
@@ -148,4 +131,4 @@ mutable struct Game
     end
 end
 
-end # module Redacted
+end 
