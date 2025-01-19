@@ -102,7 +102,7 @@ md"""# Shuffle + Mulligan
 # ╔═╡ 481f92b2-612e-48ec-a3ce-10f694c02a77
 begin
 	ink_sum_ = 0
-	N_ = 10_000_000
+	N_ = 1_000_000
 	for i in range(1, 1, N_+1)
 		shuffled_ = deck_dataframe[shuffle(1:nrow(deck_dataframe))[1:14], :]
 		ink_draw = sum(shuffled_.inkable[1:7])
