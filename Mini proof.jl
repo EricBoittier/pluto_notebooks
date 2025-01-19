@@ -25,9 +25,10 @@ begin
 end
 
 # ╔═╡ 282bca20-d4f1-11ef-3aa9-4d513b14fb52
+include("Library.jl")
 
 # ╔═╡ fafa2131-16a1-43f6-980b-422bdc5a780d
-
+GameScriptJL = include("GameScript.jl")
 
 # ╔═╡ 7730ccf8-92dd-436d-a6db-822add3d3fcb
 
@@ -115,7 +116,7 @@ end
 # ╔═╡ 64cdc824-be67-4597-a169-a2aba69128d0
 begin
 	function chase(x)
-		for chase_name in ["Chernabog's Followers"]
+		for chase_name in ["Ball"]
 			if occursin(chase_name, x)
 				return true
 			end
@@ -139,7 +140,7 @@ end
 
 # ╔═╡ c10ff768-3a1b-4dfa-b1d4-4937a2975eff
 begin
-	color_dict = Dict(1 => "purple", 3 => "red");
+	color_dict = Dict(1 => "purple", 3 => "red", 5 => "gray", 0 => "orange");
 	ink_colors = [color_dict[Int(x)] for x in deck_dataframe.color];
 end
 
@@ -179,7 +180,7 @@ end
 # deck_dataframe.color
 
 # ╔═╡ 2ec53c55-d5ed-4d82-9a3a-7f6a3573ba5c
-
+GameScriptJL.Redacted.PlayerState.CardData.CardColor
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
